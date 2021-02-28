@@ -67,7 +67,6 @@ def _get_packages_by_infra(infra):
 
 
 def _get_packages_by_check_status(check, status):
-    print(check, status)
     return app.session.query(models.Package).filter(models.Package.status.any(check=check, result=status)).order_by(models.Package.name.asc()).all()
 
 
