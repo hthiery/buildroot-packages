@@ -1,17 +1,12 @@
 import time
 import json
 
-#from os import (listdir)
-#from os.path import (isfile, join)
-
 from flask import (abort, g, render_template, redirect, request, url_for)
-#from urllib.parse import quote_plus
 
 from app import app
 
 from . import models
 
-#app.jinja_env.filters['quote_plus'] = lambda u: quote_plus(u)
 
 def _get_data():
     data = None
@@ -230,7 +225,7 @@ def defconfigs():
 #    return render_template('stats.html',
 #                           stats=stats,
 #                           status_checks=_get_status_checks(),
-#                           status_results= _get_status_results(),
+#                           status_results=_get_status_results(),
 #                           commit=commit)
 
 

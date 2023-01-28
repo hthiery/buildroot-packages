@@ -8,19 +8,30 @@ if int(sys.version[0]) > 2:
 
 
 def get_gravatar_url(email, size=30):
+    """Get the gravatar URL.
+
+    email: the registered email address
+    size: the size of the image (default: 30)
+    """
     default = "identicon"
 
     if int(sys.version[0]) > 2:
-        url = "https://www.gravatar.com/avatar/" + hashlib.md5(email.lower().encode('utf-8')).hexdigest() + "?"
-        url += urllib.parse.urlencode({'d':default, 's':str(size)})
+        url = "https://www.gravatar.com/avatar/" \
+                + hashlib.md5(email.lower().encode('utf-8')).hexdigest() + "?"
+        url += urllib.parse.urlencode({'d': default, 's': str(size)})
     else:
-        url = "https://www.gravatar.com/avatar/" + hashlib.md5(email.lower()).hexdigest() + "?"
-        url += urllib.urlencode({'d':default, 's':str(size)})
+        url = "https://www.gravatar.com/avatar/" \
+                + hashlib.md5(email.lower()).hexdigest() + "?"
+        url += urllib.urlencode({'d': default, 's': str(size)})
 
     return url
 
 
 def get_gravatars(developers, size=40):
+    """Get gravatar links for developers.
+
+    size: the size of the image (default: 40pixel)
+    """
     EMAIL_RE = re.compile(r".*<(.*)>$")
 
     gravatars = {}

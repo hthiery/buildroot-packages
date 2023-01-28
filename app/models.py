@@ -7,13 +7,13 @@ from .database import Base
 link_table_a = Table('link_package_developer', Base.metadata,
                      Column('package_id', Integer, ForeignKey('package.id')),
                      Column('developer_id', Integer, ForeignKey('developer.id'))
-                    )
+                     )
 
 
 link_table_b = Table('link_defconfig_developer', Base.metadata,
                      Column('defconfig_id', Integer, ForeignKey('defconfig.id')),
                      Column('developer_id', Integer, ForeignKey('developer.id'))
-                    )
+                     )
 
 
 class Common(Base):
