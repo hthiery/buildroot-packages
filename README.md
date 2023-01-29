@@ -71,7 +71,7 @@ https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications
 Download the sources to `/var/lib/`.
 
 ```
-git clone https://github.com/hthiery/buildroot-stats
+git clone https://github.com/hthiery/buildroot-packages
 ```
 
 Install the systemd unit file to `/etc/systemd/system`.
