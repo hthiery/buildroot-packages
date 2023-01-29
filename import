@@ -8,9 +8,12 @@ import re
 import sys
 
 from app import models
-from app.database import (SessionLocal, engine, Base)
+from app.database import (Base, SQLALCHEMY_DATABASE_URL)
 from app.gravatar import get_gravatar_url
+from sqlalchemy import create_engine
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 EMAIL_RE = re.compile(r"^(.*) <(.*)>$")
 
@@ -172,7 +175,7 @@ def import_from_json(db, filename):
     import_defconfigs(db, data['defconfigs'])
 
 
-def drop_tables():
+def drop_tables(engine):
     print("dropping tables ...")
 
     for tbl in reversed(Base.metadata.sorted_tables):
@@ -186,24 +189,22 @@ def drop_tables():
             pass
 
 
-def create_tables():
+def create_tables(engine):
     print("creating tables ...")
     Base.metadata.create_all(engine)
 
 
-def cmd_import(args):
-    db = SessionLocal()
+def cmd_import(args, engine, db):
 
     # drop all tables
-    drop_tables()
+    drop_tables(engine)
     # create tables
-    create_tables()
+    create_tables(engine)
 
     import_from_json(db, args.input)
 
 
-def cmd_get_package(args):
-    db = SessionLocal()
+def cmd_get_package(args, engine, db):
     package = db.query(models.Package).filter_by(name=args.pkg_name).first()
     print(package.name)
     print(package.current_version)
@@ -221,19 +222,30 @@ def main(args=None):
     subparser = _sub.add_parser("import", help="import stats from json")
     subparser.set_defaults(func=cmd_import)
     subparser.add_argument("-i", "--input", required=True, type=str,
-                           dest="input", help="input stats file")
+                           dest="input", help="input json stats file")
+    subparser.add_argument("-d", "--db", type=str,
+                           dest="db_name", help="db filename")
 
     # import get_package
     subparser = _sub.add_parser("package", help="get package")
     subparser.set_defaults(func=cmd_get_package)
     subparser.add_argument("-p", "--package", required=True, type=str,
                            dest="pkg_name", help="packakge name")
+    subparser.add_argument("-d", "--db", type=str,
+                           dest="db_name", help="db filename")
 
     args = parser.parse_args(args)
-    print(args)
+
+    if args.db_name:
+        engine = create_engine('sqlite:///{}'.format(args.db_name))
+    else:
+        engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+    SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    db = SessionLocal()
 
     try:
-        args.func(args)
+        args.func(args, engine, db)
     finally:
         pass
 
