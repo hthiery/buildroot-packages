@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn instance to serve buildroot-stats
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/lib/buildroot-stats/
+Environment="PATH=/var/lib/buildroot-stats/.venv/bin"
+ExecStart=/var/lib/buildroot-stats/.venv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 -m 007 wsgi:app
+
+[Install]
+WantedBy=multi-user.target
