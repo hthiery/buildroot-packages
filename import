@@ -212,7 +212,7 @@ def cmd_get_package(args):
 
 
 def main(args=None):
-    parser = argparse.ArgumentParser(description="buildroot-stats db tool.")
+    parser = argparse.ArgumentParser(description="buildroot-packages db tool.")
 
     # commands
     _sub = parser.add_subparsers(title="Commands")
