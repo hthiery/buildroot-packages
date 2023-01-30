@@ -59,7 +59,7 @@ class Package(Base):
     status_warning = Column(Integer)
     status_error = Column(Integer)
 
-    developers = relationship('Developer', secondary='link_package_developer')
+    developers = relationship('Developer', secondary='link_package_developer', overlaps="packages")
     status = relationship("Status", back_populates="package")
     patches = relationship("Patch", back_populates="package")
     cves = relationship("Cve", back_populates="package")
@@ -126,7 +126,7 @@ class Defconfig(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, unique=True)
     path = Column(String)
-    developers = relationship('Developer', secondary='link_defconfig_developer')
+    developers = relationship('Developer', secondary='link_defconfig_developer', overlaps="defconfigs")
 
     def __repr__(self):
         return "<Defconfig(name='%s')>" % (self.name)
