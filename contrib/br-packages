@@ -1,0 +1,2 @@
+# put this with your name where the conjob to update and restart the server
+hthiery ALL=(ALL) NOPASSWD: /usr/bin/systemctl
