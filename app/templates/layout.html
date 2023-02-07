@@ -42,6 +42,10 @@
             <a class="nav-link" href="{{url_for('developers')}}">Developers</a>
           </li>
 
+          <li class="nav-item {% if active_page == "cves" %} active {% endif %}">
+            <a class="nav-link" href="{{url_for('cves')}}">CVEs</a>
+          </li>
+
         </ul>
         <span class="navbar-text"><a href="https://git.buildroot.net/buildroot/tree/?h={{commit}}">Git Hash {{commit[:12]}}..</a></span>
       </div>

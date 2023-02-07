@@ -233,3 +233,18 @@ def defconfigs():
 def json_stats():
     # add a symlink to data/latest.json into static/lastest.json
     return redirect(url_for('static', filename='latest.json'))
+
+
+@app.route('/cves')
+def cves():
+    commit = _get_commit_id()
+
+    pkgs = _get_packages_by_check_status('cve', 'error')
+
+    title = u'{} packages with detected CVEs'.format(len(pkgs))
+
+    return render_template('cves.html',
+                           title=title,
+                           commit=commit,
+                           status_checks=_get_status_checks(),
+                           packages=pkgs)
