@@ -203,8 +203,8 @@ def package(name):
                            status_results=_get_status_results(),
                            pkg=pkg,
                            branch=branch,
-                           commit=commit,
-                           branches=branches
+                           commit=_get_commit_id(),
+                           branches=_get_branches()
                           )
 
 
