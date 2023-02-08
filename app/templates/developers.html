@@ -23,8 +23,8 @@
       <tr>
         <td><img src="{{ developer.gravatar_url }}"></td>
         <td>{{ developer.name }}</td>
-        <td><a href="{{ url_for('packages', developer=developer.email) }}">{{ developer.packages | length}}</a></td>
-        <td><a href="{{ url_for('defconfigs', developer=developer.email) }}">{{ developer.defconfigs | length }}</a></td>
+        <td><a href="{{ url_for('packages', branch=branch, developer=developer.email) }}">{{ developer.packages | length}}</a></td>
+        <td><a href="{{ url_for('defconfigs', branch=branch, developer=developer.email) }}">{{ developer.defconfigs | length }}</a></td>
       </tr>
     {% endfor %}
     </tbody>

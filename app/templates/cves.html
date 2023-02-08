@@ -22,7 +22,7 @@
       <tr>
 
         <!-- create link only once since this takes some extra time -->
-        {% set pkg_link = url_for('package', name=pkg.name) %}
+        {% set pkg_link = url_for('package', branch=branch, name=pkg.name) %}
 
         <!-- Name -->
         <td><a href="{{ pkg_link }}">{{ pkg.name }}</a></td>

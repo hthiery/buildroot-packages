@@ -2,10 +2,20 @@ import time
 import json
 
 from flask import (abort, g, render_template, redirect, request, url_for)
+from os import listdir
+from os.path import isfile, join
 
 from app import app
 
+from .database import get_session_db
 from . import models
+
+
+def _get_branches():
+    """Each branch has its own database file."""
+    db_path = 'databases'
+    branches = [f.replace('.db','') for f in listdir(db_path) if isfile(join(db_path, f))]
+    return branches
 
 
 def _get_data():
@@ -130,13 +140,18 @@ def index():
 
 @app.route('/packages', methods=['GET'])
 def packages():
-    commit = _get_commit_id()
-
     # GET
+    branch = request.args.get('branch', default='master')
     developer = request.args.get('developer')
     check = request.args.get('check')
     check_status = request.args.get('status')
     infra = request.args.get('infra')
+
+    # get session db
+    try:
+        app.session = get_session_db(branch=branch)
+    except FileNotFoundError:
+        return 'error'
 
     if developer is not None:
         pkgs = _get_packages_by_developer(developer)
@@ -155,8 +170,11 @@ def packages():
                            title=title,
                            status_checks=_get_status_checks(),
                            status_results=_get_status_results(),
-                           commit=commit,
-                           packages=pkgs)
+                           packages=pkgs,
+                           branch=branch,
+                           commit=_get_commit_id(),
+                           branches=_get_branches()
+                          )
 
 
 @app.route('/status/<name>')
@@ -168,36 +186,63 @@ def status(name):
     return json.dumps(status)
 
 
-@app.route('/package/<name>')
+@app.route('/package/<name>', methods=['GET'])
 def package(name):
-    commit = _get_commit_id()
+    # GET
+    branch = request.args.get('branch', default='master')
+
+    # get session db
+    try:
+        app.session = get_session_db(branch=branch)
+    except FileNotFoundError:
+        return 'error'
+
     pkg = _get_package_by_name(name)
     return render_template('package.html',
                            status_checks=_get_status_checks(),
                            status_results=_get_status_results(),
+                           pkg=pkg,
+                           branch=branch,
                            commit=commit,
-                           pkg=pkg)
+                           branches=branches
+                          )
 
 
-@app.route('/developers')
+@app.route('/developers', methods=['GET'])
 def developers():
-    commit = _get_commit_id()
+    # GET
+    branch = request.args.get('branch', default='master')
+
+    # get session db
+    try:
+        app.session = get_session_db(branch=branch)
+    except:
+        return 'error'
+
     devs = _get_all_developers()
     title = u'Total amount of developers: {}'.format(len(devs))
     return render_template('developers.html',
                            title=title,
                            status_checks=_get_status_checks(),
                            status_results=_get_status_results(),
-                           commit=commit,
-                           developers=devs)
+                           developers=devs,
+                           branch=branch,
+                           commit=_get_commit_id(),
+                           branches=_get_branches()
+                          )
 
 
 @app.route('/defconfigs', methods=['GET'])
 def defconfigs():
-    commit = _get_commit_id()
-
     # GET
+    branch = request.args.get('branch', default='master')
     developer = request.args.get('developer')
+
+    # get session db
+    try:
+        app.session = get_session_db(branch=branch)
+    except FileNotFoundError:
+        return 'error'
 
     if developer is not None:
         defs = _get_defconfigs_by_developer(developer)
@@ -210,8 +255,11 @@ def defconfigs():
                            title=title,
                            status_checks=_get_status_checks(),
                            status_results=_get_status_results(),
-                           commit=commit,
-                           defconfigs=defs)
+                           defconfigs=defs,
+                           branch=branch,
+                           commit=_get_commit_id(),
+                           branches=_get_branches()
+                          )
 
 
 #@app.route('/stats')
@@ -235,9 +283,16 @@ def json_stats():
     return redirect(url_for('static', filename='latest.json'))
 
 
-@app.route('/cves')
+@app.route('/cves', methods=['GET'])
 def cves():
-    commit = _get_commit_id()
+    # GET
+    branch = request.args.get('branch', default='master')
+
+    # get session db
+    try:
+        app.session = get_session_db(branch=branch)
+    except FileNotFoundError:
+        return 'error'
 
     pkgs = _get_packages_by_check_status('cve', 'error')
 
@@ -245,6 +300,9 @@ def cves():
 
     return render_template('cves.html',
                            title=title,
-                           commit=commit,
                            status_checks=_get_status_checks(),
-                           packages=pkgs)
+                           packages=pkgs,
+                           branch=branch,
+                           commit=_get_commit_id(),
+                           branches=_get_branches()
+                          )

@@ -46,7 +46,7 @@
                 <td>Infrastructure(s)</td>
                 <td>
                   {% for infra in pkg.infras %}
-                  <p>{{infra.destination}}: <a href="{{url_for('packages', infra=infra.build_system)}}">{{infra.build_system}}</a></p>
+                  <p>{{infra.destination}}: <a href="{{url_for('packages', branch=branch, infra=infra.build_system)}}">{{infra.build_system}}</a></p>
                   {% endfor %}
                 </td>
               </tr>
@@ -55,7 +55,7 @@
                 <td>
                   <a name="developers"></a>
                   {% for developer in pkg.developers %}
-                  <p><a href="{{ url_for('packages', developer=developer.email) }}"><img src="{{ developer.gravatar_url }}">{{ developer.name }}</a></p>
+                  <p><a href="{{ url_for('packages', branch=branch, developer=developer.email) }}"><img src="{{ developer.gravatar_url }}">{{ developer.name }}</a></p>
                   {% endfor %}
                 </td>
               </tr>
