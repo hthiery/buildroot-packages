@@ -8,7 +8,7 @@
   <div class="alert alert-primary mt-2 mb-2" role="alert">
     {{title}}
   </div>
-  <table class="table table-striped table-bordered mt-2 sortable">
+  <table class="table table-striped table-bordered table-hover sortable">
     <thead class="thead-light">
     <tr>
       <th></th>
@@ -23,8 +23,8 @@
       <tr>
         <td><img src="{{ developer.gravatar_url }}"></td>
         <td>{{ developer.name }}</td>
-        <td><a href="{{ url_for('packages', branch=branch, developer=developer.email) }}">{{ developer.packages | length}}</a></td>
-        <td><a href="{{ url_for('defconfigs', branch=branch, developer=developer.email) }}">{{ developer.defconfigs | length }}</a></td>
+        <td><a class="text-decoration-none" href="{{ url_for('packages', branch=branch, developer=developer.email) }}">{{ developer.packages | length}}</a></td>
+        <td><a class="text-decoration-none" href="{{ url_for('defconfigs', branch=branch, developer=developer.email) }}">{{ developer.defconfigs | length }}</a></td>
       </tr>
     {% endfor %}
     </tbody>

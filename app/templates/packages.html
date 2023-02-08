@@ -31,31 +31,52 @@
         {% set pkg_link = url_for('package', branch=branch, name=pkg.name) %}
 
         <!-- Name -->
-        <td><a href="{{ pkg_link }}">{{ pkg.name }}</a></td>
+        <td><a class="text-decoration-none" href="{{ pkg_link }}">{{ pkg.name }}</a></td>
 
         <!-- Package Version / Upstream Version -->
         {% if pkg.latest_version == None %}
+          <td class="table-secondary">
+            {{ pkg.current_version[0:20] }}
             {% if pkg.current_version | length > 20 %}
-            <td class="table-secondary">{{ pkg.current_version[0:20] + ".." }}</td>
-            {% else %}
-            <td class="table-secondary">{{ pkg.current_version }}</td>
+            ..
             {% endif %}
-            <td class="table-secondary"><a href="https://release-monitoring.org/project/{{ pkg.latest_version_id }}">{{ pkg.latest_version }}</a></td>
+          </td>
+          <td class="table-secondary">NA</td>
 
         {% elif pkg.current_version == pkg.latest_version  %}
-          {% if pkg.current_version | length > 20 %}
-            <td class="table-success">{{ pkg.current_version[0:20] + ".." }}</td>
-          {% else %}
-            <td class="table-success">{{ pkg.current_version }}</td>
-          {% endif %}
-          <td class="table-success"><a href="https://release-monitoring.org/project/{{ pkg.latest_version_id }}">{{ pkg.latest_version }}</a></td>
+          <td class="table-success">
+            {{ pkg.current_version[0:20] }}
+            {% if pkg.current_version | length > 20 %}
+            ..
+            {% endif %}
+          </td>
+
+          <td class="table-success">
+            <a class="text-decoration-none" href="https://release-monitoring.org/project/{{ pkg.latest_version_id }}">
+              {{ pkg.latest_version[0:20] }}
+              {% if pkg.latest_version | length > 20 %}
+              ..
+              {% endif %}
+            </a>
+          </td>
+
         {% else %}
-          {% if pkg.current_version | length > 20 %}
-            <td class="table-danger">{{ pkg.current_version[0:20] + ".." }}</td>
-          {% else %}
-            <td class="table-danger">{{ pkg.current_version }}</td>
-          {% endif %}
-          <td class="table-danger"><a href="https://release-monitoring.org/project/{{ pkg.latest_version_id }}">{{ pkg.latest_version }}</a></td>
+          <td class="table-danger">
+            {{ pkg.current_version[0:20] }}
+            {% if pkg.current_version | length > 20 %}
+            ..
+            {% endif %}
+          </td>
+
+          <td class="table-danger">
+            <a class="text-decoration-none" href="https://release-monitoring.org/project/{{ pkg.latest_version_id }}">
+              {{ pkg.latest_version[0:20] }}
+              {% if pkg.latest_version | length > 20 %}
+              ..
+              {% endif %}
+            </a>
+          </td>
+
         {% endif %}
 
         <!-- CHECK Status ok -->
@@ -64,7 +85,7 @@
         {% else %}
           <td class="table-secondary">
         {% endif %}
-        <a href="{{ pkg_link }}#status">{{ pkg.status_ok }}</a>
+        <a class="text-decoration-none" href="{{ pkg_link }}#status">{{ pkg.status_ok }}</a>
         </td>
         <!-- <td><div id="status-{{pkg.name}}" data-toggle="popover" tooltip-append-to-body="true">?</div></td> -->
 
@@ -74,7 +95,7 @@
         {% else %}
           <td class="table-success">
         {% endif %}
-        <a href="{{ pkg_link }}#status">{{ pkg.status_warning}}</a>
+        <a class="text-decoration-none" href="{{ pkg_link }}#status">{{ pkg.status_warning}}</a>
         </td>
 
         <!-- CHECK Status error -->
@@ -83,14 +104,14 @@
         {% else %}
           <td class="table-success">
         {% endif %}
-        <a href="{{ pkg_link }}#status">{{ pkg.status_error}}</a>
+        <a class="text-decoration-none" href="{{ pkg_link }}#status">{{ pkg.status_error}}</a>
         </td>
 
         <!-- CVE -->
         {% if pkg.cve_count == 0 %}
         <td class="table-success">0</td>
         {% else %}
-        <td class="table-danger"><a href="{{ pkg_link }}#cve">{{ pkg.cve_count }}</a></td>
+        <td class="table-danger"><a class="text-decoration-none" href="{{ pkg_link }}#cve">{{ pkg.cve_count }}</a></td>
         {% endif %}
 
       </tr>

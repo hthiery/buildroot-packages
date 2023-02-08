@@ -19,7 +19,7 @@
               </tr>
               <tr>
                 <td>Latest Version</td>
-                <td><a href="http://release-monitoring.org/project/{{ pkg.latest_version_id }}">{{ pkg.latest_version }}</a></td>
+                <td><a class="text-decoration-none" href="http://release-monitoring.org/project/{{ pkg.latest_version_id }}">{{ pkg.latest_version }}</a></td>
               </tr>
               <tr>
                 <td>License</td>
@@ -29,24 +29,24 @@
                 <td>CPE ID</td>
 
                 {% if pkg.cpeid != None %}
-                <td><a href="https://nvd.nist.gov/products/cpe/search/results?namingFormat=2.3&keyword={{ pkg.cpeid }}">{{ pkg.cpeid }}</a></td>
+                <td><a class="text-decoration-none" href="https://nvd.nist.gov/products/cpe/search/results?namingFormat=2.3&keyword={{ pkg.cpeid }}">{{ pkg.cpeid }}</a></td>
                 {% else %}
-                <td>{{ pkg.cpeid }} - <a href="https://nvd.nist.gov/products/cpe/search/results?namingFormat=2.3&keyword={{ pkg.name }}">Search</a></td>
+                <td>{{ pkg.cpeid }} - <a class="text-decoration-none" href="https://nvd.nist.gov/products/cpe/search/results?namingFormat=2.3&keyword={{ pkg.name }}">Search</a></td>
                 {% endif %}
               </tr>
               <tr>
                 <td>Homepage</td>
-                <td><a href="{{ pkg.url }}">{{ pkg.url }}</a></td>
+                <td><a class="text-decoration-none" href="{{ pkg.url }}">{{ pkg.url }}</a></td>
               </tr>
               <tr>
                 <td>Path</td>
-                <td><a href="https://git.buildroot.net/buildroot/tree/{{ pkg.pkg_path }}?h={{ commit }}">{{ pkg.pkg_path }}</a>
+                <td><a class="text-decoration-none" href="https://git.buildroot.net/buildroot/tree/{{ pkg.pkg_path }}?h={{ commit }}">{{ pkg.pkg_path }}</a>
               </tr>
               <tr>
                 <td>Infrastructure(s)</td>
                 <td>
                   {% for infra in pkg.infras %}
-                  <p>{{infra.destination}}: <a href="{{url_for('packages', branch=branch, infra=infra.build_system)}}">{{infra.build_system}}</a></p>
+                  <p>{{infra.destination}}: <a class="text-decoration-none" href="{{url_for('packages', branch=branch, infra=infra.build_system)}}">{{infra.build_system}}</a></p>
                   {% endfor %}
                 </td>
               </tr>
@@ -55,13 +55,13 @@
                 <td>
                   <a name="developers"></a>
                   {% for developer in pkg.developers %}
-                  <p><a href="{{ url_for('packages', branch=branch, developer=developer.email) }}"><img src="{{ developer.gravatar_url }}">{{ developer.name }}</a></p>
+                  <p><a class="text-decoration-none" href="{{ url_for('packages', branch=branch, developer=developer.email) }}"><img src="{{ developer.gravatar_url }}">{{ developer.name }}</a></p>
                   {% endfor %}
                 </td>
               </tr>
               <tr>
                 <td>Autobuild</td>
-                <td><a href="http://autobuild.buildroot.org/?reason={{ pkg.name}}-{{ pkg.current_version}}">results</a></td>
+                <td><a class="text-decoration-none" href="http://autobuild.buildroot.org/?reason={{ pkg.name}}-{{ pkg.current_version}}">results</a></td>
               </tr>
             </table>
         </ul>
@@ -107,7 +107,7 @@
     <ul class="list-group list-group-flush">
       <li class="list-group-item">
         {% for cve in pkg.cves | sort(attribute='name') %}
-          <p><a href="https://security-tracker.debian.org/tracker/{{ cve.name }}">{{ cve.name }}</a></p>
+          <p><a class="text-decoration-none" href="https://security-tracker.debian.org/tracker/{{ cve.name }}">{{ cve.name }}</a></p>
         {% endfor %}
       </li>
     </ul>
@@ -120,7 +120,7 @@
     <ul class="list-group list-group-flush">
       <li class="list-group-item">
         {% for patch in pkg.patches | sort(attribute='filename') %}
-        <p><a href="https://git.buildroot.net/buildroot/tree/package/{{pkg.name}}/{{patch.filename}}?h={{commit}}">{{patch.filename}}</a></p>
+        <p><a class="text-decoration-none" href="https://git.buildroot.net/buildroot/tree/package/{{pkg.name}}/{{patch.filename}}?h={{commit}}">{{patch.filename}}</a></p>
         {% endfor %}
       </li>
     </ul>
