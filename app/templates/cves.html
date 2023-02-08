@@ -31,7 +31,8 @@
 
 		<td>
         {% for cve in pkg.cves | sort(attribute='name') %}
-          <a href="https://security-tracker.debian.org/tracker/{{ cve.name }}">{{ cve.name }}, </a>
+          <a href="https://security-tracker.debian.org/tracker/{{ cve.name }}">{{ cve.name }}</a>
+          {{ ", " if not loop.last else "" }}
         {% endfor %}
         </td>
       </tr>
